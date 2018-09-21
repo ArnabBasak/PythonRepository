@@ -1,0 +1,13 @@
+number = input("enter a number: ")
+number1 = input("enter second number: ")
+ans = float(number)
+ans2 = float(number1)
+import math
+print("The floor of the first number is",+math.floor(ans))
+print("The floor of the second number is",+math.floor(ans2))
+print("The square of the first number is",+math.sqrt(ans))
+print("The floor of the second number is",+math.sqrt(ans2))
+print("The absolute of the first number is",+abs(ans))
+print("The absolute of the second number is",+abs(ans2))
+print("The power of the first number is",+pow(ans,ans2))
+input("press enter to continue...")

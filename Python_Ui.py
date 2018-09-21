@@ -1,0 +1,12 @@
+from tkinter import *
+mainwindow = Tk()
+mainwindow.title("Store Data Recovery")
+main_label = Label(mainwindow,text="STORE DATA RECOVERY",fg="dark green",font="Verdana 15 bold")
+main_label.pack()
+soa_database_label=Label(mainwindow,text="select database",fg="dark green",font="Verdana 10")
+soa_database_label.pack()
+var1 = IntVar()
+Checkbutton(mainwindow, text="SOA",variable="var1").pack()
+var2 = IntVar()
+Checkbutton(mainwindow, text="STORE",variable="var2").pack()
+mainwindow.mainloop()
