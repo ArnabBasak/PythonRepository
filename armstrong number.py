@@ -1,0 +1,1 @@
+# program for amstrong number

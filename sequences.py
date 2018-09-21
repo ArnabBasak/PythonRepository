@@ -1,0 +1,11 @@
+friends=['Roshni','Ishwari','Tarun','Nikhil','Pranay']
+print("First element is",friends[0])
+friends[1]
+friends[2]
+friends[3]
+friends[4]
+friends[-1]
+friends[-2]
+friends[-3]
+friends[-4]
+friends[-5]
