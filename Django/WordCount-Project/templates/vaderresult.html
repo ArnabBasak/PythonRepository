@@ -1,0 +1,26 @@
+<html>
+<head>
+<title> Sentiment  output </title>
+<body>
+<b> Entered sentence is </b> <br>
+{{sentence}} <br><br>
+<b> The sentiment dictionary  for the sentence is </b> <br>
+{{output}} <br><br>
+<b> Negative proportion in the sentence is </b><br>
+{{neg_per}}<br><br>
+<b> Positive proportion in the sentence is </b><br>
+{{pos_per}}<br><br>
+<b> Neutral proportion in the sentence is </b><br>
+{{neu_per}}<br><br>
+<b> Overall sentiment sentence is </b><br>
+{{overall}}<br>
+<h5> Select the option below </h5>
+<a href = "{% url 'about' %}">About</a><br>
+<a href = "{% url 'textblob' %}">TextBlob sentiment Analysis</a><br>
+<a href = "{% url 'vader' %}">Vader sentiment Analysis</a><br>
+<a href = "{% url 'token' %}">Text Tokenization</a><br>
+<a href = "{% url 'count' %}">Word counter</a><br>
+<a href = "{% url 'logout' %}">Logout</a>
+</body>
+</head>
+</html>

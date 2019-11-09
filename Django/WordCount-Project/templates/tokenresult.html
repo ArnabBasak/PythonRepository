@@ -1,0 +1,20 @@
+<html>
+<head>
+<title> Tokenization  output </title>
+<body>
+<b> Entered sentence is </b> <br>
+{{sentence}} <br><br>
+<b> word tokens of the sentence is </b> <br>
+{{wordtoken}} <br><br>
+<b> sentence token is </b><br>
+{{senttoken}}<br><br>
+<h5> Select the option below </h5>
+<a href = "{% url 'about' %}">About</a><br>
+<a href = "{% url 'textblob' %}">TextBlob sentiment Analysis</a><br>
+<a href = "{% url 'vader' %}">Vader sentiment Analysis</a><br>
+<a href = "{% url 'token' %}">Text Tokenization</a><br>
+<a href = "{% url 'count' %}">Word counter</a><br>
+<a href = "{% url 'logout' %}">Logout</a>
+</body>
+</head>
+</html>

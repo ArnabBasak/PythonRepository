@@ -1,0 +1,22 @@
+<html>
+<head>
+<title> Word counter output </title>
+<body>
+<b>{{greetings}}</b> <b> {{welcome}} </b>
+<h5> There are {{count}} words in your sentence </h5 <br>
+<h5> Full text is </h5>
+{{fulltext}}
+<h1> word count </h1>
+{% for word,counttotal in sortedwords%}
+{{ word }} - {{ counttotal }}
+{% endfor %}
+<h5> Select the option below </h5>
+<a href = "{% url 'about' %}">About</a><br>
+<a href = "{% url 'textblob' %}">TextBlob sentiment Analysis</a><br>
+<a href = "{% url 'vader' %}">Vader sentiment Analysis</a><br>
+<a href = "{% url 'token' %}">Text Tokenization</a><br>
+<a href = "{% url 'count' %}">Word counter</a><br>
+<a href = "{% url 'logout' %}">Logout</a>
+</body>
+</head>
+</html>
