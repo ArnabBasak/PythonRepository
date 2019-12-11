@@ -1,5 +1,6 @@
 import datetime
 import pymysql
+import pandas as pd
 class recovery():
     def __init__(self):
         self.fromdate = ''
@@ -8,6 +9,10 @@ class recovery():
         self.d2 = ''
         self.db = ''
         self.diff = 0
+        self.dumpsCustomerDf = pd.DataFrame()
+        self.dumpsCustomerDf = self.dumpsCustomerDf.fillna(0)
+        self.liveCustomerDf = pd.DataFrame()
+        self.liveCustomerDf = self.liveCustomerDf.fillna(0)
     def inputDate(self):
         self.fromdate = input('enter the date from YYYY-MM--DD format when the data is missing')
         self.todate = input('enter the date till YYYY-MM--DD format when the data is missing')
@@ -30,53 +35,180 @@ class recovery():
         pass
     def countCustomer(self):
          self.connectDb()
-         print(self.d1)
-         print(self.d2)
          if self.d1 != '' and self.d2 != '':
             try:
                  self.cur = self.db.cursor()
                  self.cur.execute("SELECT count(*) FROM customer WHERE date_first_registered LIKE %s", ("%" + str(self.d1).strip("00:00:00") + "%",))
                  self.result = self.cur.fetchone()
-                 print(self.result[0])
+                 print("the total number of customer is missing are:",self.result[0])
             except Exception:
                  print(Exception)
          else:
                  print('To date and from date is invalid')
+    def countRecord(self):
+         self.connectDb()
+         if self.d1 != '' and self.d2 != '':
+             try:
+                 self.cur = self.db.cursor()
+                 self.cur.execute("select count(*) From record where customer_arrival_time LIKE %s",("%" + str(self.d1).strip("00:00:00")+ "%",))
+                 self.result = self.cur.fetchall()
+                 print("The total number of records missing are:",self.result[0])
+             except Exception:
+                 print(Exception)
+         else:
+             print('To date and from date is invalid')
+    def countSchemes(self):
+         self.connectDb()
+         if self.d1 != '' and self.d2 != '':
+             try:
+                 self.cur = self.db.cursor()
+                 self.cur.execute("select count(*) from customer_contact_lens_scheme where scheme_state_date LIKE %s",("%" + str(self.d1).strip("00:00:00")+ "%",))
+                 self.result = self.cur.fetchall()
+                 print("The total number of schemes missing are: ",self.result[0])
+             except Exception:
+                 print(Exception)
+         else:
+             print('To date and from date is invalid')
+    def countSalesHeader(self):
+         self.connectDb()
+         if self.d1 != '' and self.d2 != '':
+             try:
+                 self.cur = self.db.cursor()
+                 self.cur.execute("select count(*) from sales_header where sale_date LIKE %s",("%" + str(self.d1).strip("00:00:00")+ "%",))
+                 self.result = self.cur.fetchall()
+                 print("The total number of sales_header missing are: ",self.result[0])
+             except Exception:
+                 print(Exception)
+         else:
+             print('To date and from date is invalid')
+    def countSalesDetail(self):
+         self.connectDb()
+         if self.d1 != '' and self.d2 != '':
+             try:
+                 self.cur = self.db.cursor()
+                 self.cur.execute("select count(*) from sales_detail where sales_header_id in (select sales_header_id from sales_header where sale_date LIKE %s",("%" + str(self.d1).strip("00:00:00")+ "%",))
+                 self.result = self.cur.fetchall()
+                 print("The total number of sales_header missing are: ",self.result[0])
+             except Exception:
+                 print(Exception)
+         else:
+             print('To date and from date is invalid')
+    def countSalesPayment(self):
+         self.connectDb()
+         if self.d1 != '' and self.d2 != '':
+             try:
+                 self.cur = self.db.cursor()
+                 self.cur.execute("select count(*) from sales_payment where sales_header_id in (select sales_header_id from sales_header where sale_date LIKE %s",("%" + str(self.d1).strip("00:00:00")+ "%",))
+                 self.result = self.cur.fetchall()
+                 print("The total number of sales_payment missing are: ",self.result[0])
+             except Exception:
+                 print(Exception)
+         else:
+             print('To date and from date is invalid')
+    def countOdersModified(self):
+        self.connectDb()
+        if self.d1 != '' and self.d2 != '':
+            try:
+                self.cur = self.db.cursor()
+                self.cur.execute("select count(*) from clinical_dispense_order where order_date LIKE %s",("%" + str(self.d1).strip("00:00:00")+ "%",))
+                self.result = self.cur.fetchall()
+                print("The total number of clinical_dispense_order updated are: ",self.result[0])
+            except Exception:
+                print(Exception)
+        else:
+            print('To date and from date is invalid')
+    def countDispenseItem(self):
+        self.connectDb()
+        if self.d1 != '' and self.d2 != '':
+            try:
+                self.cur = self.db.cursor()
+                self.cur.execute("select count(*) from dispense_item where clinical_dispense_order_id in (select clinical_dispense_order_id from clinical_dispense_order where order_date LIKE %s",("%" + str(self.d1).strip("00:00:00")+ "%",))
+                self.result = self.cur.fetchall()
+                print("The total number of dispense item missing are: ",self.result[0])
+            except Exception:
+                print(Exception)
+        else:
+            print('To date and from date is invalid')
+    def countDispenseItemUpdated(self):
+        self.connectDb()
+        if self.d1 != '' and self.d2 != '':
+            try:
+                self.cur = self.db.cursor()
+                self.cur.execute("select count(*) from dispense_item where collected_date like %s",("%" + str(self.d1).strip("00:00:00")+ "%",))
+                self.result = self.cur.fetchall()
+                print("The total number of dispense item updated are: ",self.result[0])
+            except Exception:
+                print(Exception)
+        else:
+            print('To date and from date is invalid')
+    def countDispenseRx(self):
+        self.connectDb()
+        if self.d1 != '' and self.d2 != '':
+            try:
+                self.cur = self.db.cursor()
+                self.cur.execute("select count(d.*) from dispense_rx d, dispense_item di, clinical_dispense_order c where d.dispense_rx_id=di.dispense_item_id and di.clinical_dispense_order_id=c.clinical_dispense_order_id and c.order_date LIKE %s",("%" + str(self.d1).strip("00:00:00")+ "%",))
+                self.result = self.cur.fetchall()
+                print("The total number of dispense rx missing are: ",self.result[0])
+            except Exception:
+                print(Exception)
+        else:
+            print('To date and from date is invalid')
+    def countNhsVoucher(self):
+        self.connectDb()
+        if self.d1 != '' and self.d2 != '':
+            try:
+                self.cur = self.db.cursor()
+                self.cur.execute("select count(*) from nhsvoucher where nhs_voucher_id in (select nhs_voucher_id from sight_test where tr_number in (select record_id from record where customer_arrival_time LIKE %s",("%" + str(self.d1).strip("00:00:00")+ "%",))
+                self.result = self.cur.fetchall()
+                print("The total number of NHS voucher missing are: ",self.result[0])
+            except Exception:
+                print(Exception)
+        else:
+            print('To date and from date is invalid')
 
+    def searchCustomerinDumps(self):
+             self.connectDb()
+             if self.d1 != '' and self.d2 != '':
+                 #try:
+                     cur = self.db.cursor()
+                     #self.cur.execute("select n.first_name,n.last_name,c.date_of_birth, d.doctor_id from customer c inner join name n on n.name_id = c.name_id left outer join doctor d on d.doctor_id = c.doctor_id where c.date_first_registered LIKE  %s", ("%" + str(self.d1).strip("00:00:00") + "%",))
+                     self.cur.execute("SELECT count(*) FROM customer WHERE date_first_registered LIKE %s", ("%" + str(self.d1).strip("00:00:00") + "%",))
+                     self.result = self.cur.fetchall()
+                     self.result = pd.DataFrame()
+                     print(self.result)
+                 #except Exception:
+                    # print(Exception)
+             else:
+                     print('To date and from date is invalid')
+
+
+
+ #      HIGH LEVEL ANALYSIS     #
 a = recovery()
 a.inputDate()
 a.countCustomer()
+a.countRecord()
+a.countSchemes()
+a.countOdersModified()
+a.countDispenseItem()
+a.countDispenseItemUpdated()
+a.countDispenseRx()
+a.countNhsVoucher()
+a.searchCustomerinDumps()
 
-def searchCustomerinDumps():
-         connectDb()
-         if fromdate != '' and todate != '':
-             try:
-                 cur = db.cursor()
-                 query = """select n.first_name,n.last_name,c.date_of_birth, d.doctor_id from customer c inner join name n on n.name_id = c.name_id left outer join doctor d on d.doctor_id = c.doctor_id where c.date_first_registered >= '%s' and c.date_first_registered <= '%s'""" %d1,d2
-                 cur.execute(query)
-                 result = cur.fetchall()
-                 print(result)
-             except Exception:
-                 print("Error with query: " + query)
-         else:
-             print('To date and from date is invalid')
+def searchCustomerinlive(self):
+        self.connectDb()
+        if self.d1 != '' and self.d2 != '':
+            try:
+                cur = db.cursor()
+                self.liveCustomerDf = pd.read_sql_query("select n.first_name,n.last_name,c.date_of_birth, d.doctor_id from customer c inner join name n on n.name_id = c.name_id left outer join doctor d on d.doctor_id = c.doctor_id where c.date_first_registered >=  %s", ("%" + str(self.d1).strip("00:00:00") + "%",))
+                #result = cur.fetchall()
+                #print(result)
+            except Exception:
+                print("Error with query: " + query)
+        else:
+            print('To date and from date is invalid')
 
-def searchCustomerinlive():
-         try:
-             db = pymysql.connect(host="localhost",user="root",passwd="library",db="soa")
-         except Exception:
-             print("Error in MySQL connection")
-         if fromdate != '' and todate != '':
-             try:
-                 cur = db.cursor()
-                 query = """select n.first_name,n.last_name,c.date_of_birth, d.doctor_id from customer c inner join name n on n.name_id = c.name_id left outer join doctor d on d.doctor_id = c.doctor_id where c.date_first_registered >= '%s' and c.date_first_registered <= '%s'""" %d1,d2
-                 cur.execute(query)
-                 result = cur.fetchall()
-                 print(result)
-             except Exception:
-                 print("Error with query: " + query)
-         else:
-             print('To date and from date is invalid')
 
 def compareCustomer():
      dumpcustomer = open('dumpcus.txt','r')
@@ -86,34 +218,6 @@ def compareCustomer():
      file_out = ('output_file.txt','w')
      for line in same:
          file_out.write(line)
-
-def countRecord():
-     connectDb()
-     if fromdate != '' and todate != '':
-         try:
-             cur = db.cursor()
-             query = """select count(*) from record where cast(customer_arrival_time as date) >= '%s' and cast(customer_arrival_time as date) <= '%s'""" %d1,d2
-             cur.execute(query)
-             result = cur.fetchall()
-             print(result)
-         except Exception:
-             print("Error with query: " + query)
-     else:
-         print('To date and from date is invalid')
-def countSchemes():
-     connectDb()
-     if fromdate != '' and todate != '':
-         try:
-             cur = db.cursor()
-             query = """select count(*) from customer_contact_lens_scheme where cast(scheme_state_date as date) >= '%s' order by customer_contact_lens_scheme_id;""" %d1
-             cur.execute(query)
-             result = cur.fetchall()
-             print(result)
-         except Exception:
-             print("Error with query: " + query)
-     else:
-         print('To date and from date is invalid')
-
 def checkSchemes():
      connectDb()
      if fromdate != '' and todate != '':
