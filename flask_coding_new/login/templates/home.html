@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>calculation</title>
+</head>
+<body>
+    <h2>Calculator</h2>
+    <form action = "/home" method="POST">
+      {{ msg }}
+    <table>
+        <tr><td>First Number</td><td><input type="text" name="first_num"></td></tr>
+        <tr><td>Second Number</td><td><input type="text" name="second_num"></td></tr>
+        <tr><td><select name="operation">
+                      <option value="option">Select Option</option>
+                      <option value="addition">Addition</option>
+                      <option value="substraction">Substraction</option>
+                      <option value="multiplication">Multiply</option>
+                      <option value="division">Division</option>
+                    </select><br></td></tr>
+        <tr><td><input type="submit" value="calculate"></td></tr>
+    </table><br><br>
+    <a href="/">Logout</a><br><br><a href="/simpleinterest">click here to calculate simple interest</a>
+    </form>
+</body>
+</html>
