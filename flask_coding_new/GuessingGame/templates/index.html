@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="jumbotron">
+  <h1 class="display-4">Guessing the Number Game</h1>
+  <p class="lead">You have to guess a number and if it matches with the systems guess then you are the winner</p>
+  <hr class="my-4">
+  <p>This is purly on luck</p>
+  <a class="btn btn-primary btn-lg" href="{{url_for('login')}}" role="button">Play Game</a>
+</div>
+{% endblock %}

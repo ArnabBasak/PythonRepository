@@ -1,0 +1,19 @@
+{% extends "base.html"%}
+{% block content %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="{{url_for('register')}}">Register with Us</a>
+</nav>
+<form action="{{url_for('login')}}">
+  <div>
+      <input type="text" name="username" placeholder="provide a username">
+    </div>
+    <br>
+    <div>
+      <input type="password" name="password" placeholder="password">
+    </div>
+    <br>
+    <div>
+      <input type="submit" value="Submit">
+    </div>
+</form>
+{% endblock %}
